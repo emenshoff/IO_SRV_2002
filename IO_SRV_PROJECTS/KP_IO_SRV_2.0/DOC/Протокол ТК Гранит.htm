@@ -1,0 +1,816 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0032)http://www.iface.ru/grandesc.htm -->
+<HTML><HEAD><TITLE>Протокол ТК Гранит</TITLE>
+<META content="text/html; charset=koi8-r" http-equiv=Content-Type>
+<META content="MSHTML 5.00.2920.0" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff>
+<P align=right><FONT color=#0000ff size=2>═</FONT></P>
+<P align=center><FONT size=5><U>Описание протокола обмена телекомплекса 
+Гранит</U></FONT></P>
+<P><STRONG>Общий вид пакета в канале связи:</STRONG></P>
+<BLOCKQUOTE>
+  <TABLE border=1>
+    <TBODY>
+    <TR>
+      <TD>═</TD>
+      <TD>0101</TD>
+      <TD>Меандр</TD></TR>
+    <TR>
+      <TD>0101</TD>
+      <TD>0101</TD>
+      <TD>═</TD></TR>
+    <TR>
+      <TD>0111</TD>
+      <TD>1110</TD>
+      <TD>Флаг начала пакета</TD></TR>
+    <TR>
+      <TD>хххх</TD>
+      <TD>хххх</TD>
+      <TD>Номер КП (от 1 до 128)</TD></TR>
+    <TR>
+      <TD>хххх</TD>
+      <TD>хххх</TD>
+      <TD>Тип пакета / адрес субблока </TD></TR>
+    <TR>
+      <TD>═</TD>
+      <TD>═</TD>
+      <TD>═</TD></TR>
+    <TR>
+      <TD>═</TD>
+      <TD>═</TD>
+      <TD>═</TD></TR>
+    <TR>
+      <TD>═</TD>
+      <TD>═</TD>
+      <TD>Данные (до 16 байт)</TD></TR>
+    <TR>
+      <TD>═</TD>
+      <TD>═</TD>
+      <TD>═</TD></TR>
+    <TR>
+      <TD>хххх</TD>
+      <TD>хххх</TD>
+      <TD>Циклический код защиты</TD></TR>
+    <TR>
+      <TD>хххх</TD>
+      <TD>хххх</TD>
+      <TD>по полиному х16+х12+х5+1</TD></TR>
+    <TR>
+      <TD>0111</TD>
+      <TD>1110</TD>
+      <TD>Флаг завершения пакета</TD></TR></TBODY></TABLE></BLOCKQUOTE>
+<P align=center>═</P>
+<P align=left>Для обеспечения "прозрачности" данных передаваемых внутри пакета ( 
+между флагами) при передаче после пяти подряд идущих '1' принудительно 
+вставляется "0"(так называемые бит-стаффинги). Приемная сторона должна 
+соответственно удалять эти нули.</P>
+<P align=left>В основном пакет формируется по алгоритму стандарта HDLC - флаги, 
+полином защиты, бит-стаффинги. Однако конкретная реализация имеет ряд отличий от 
+стандарта, которые необходимо учитывать при работе с протоколом:</P>
+<UL>
+  <LI>
+  <P align=left>первым при передаче в канал уходит старший бит байтов</P>
+  <LI>
+  <P align=left>подсчет CRC производится по порядку следования битов в канале 
+  (т.е. со старшего бита)</P>
+  <LI>
+  <P align=left>предкомпенсация CRC равна нулю</P>
+  <LI>
+  <P align=left>по отношению к стандарту RS-232 сигналы в канале инверсны.</P>
+  <LI>
+  <P align=left>перед флагом начяала пакета в канал засылаются 12 битов 
+  (чередующиеся 0-1) необходимые для фазовой подсинхронизации 
+  приемопередатчика.</P></LI></UL>
+<P align=left>Логика работы канала связи:</P>
+<P align=left>Инициатором обмена всегда является ПУ Гранита и если у ПУ есть 
+посылка на передачу он передает ее. Еслы посылок у ПУ нет, он формирует на 
+передачу МЕАНДР (12 битов 0-1). КП принимает МЕАНДР и в ответ передает либо 
+МЕАНДР (если передавать нечего) либо информационный пакет. Пауза между принятым 
+МЕАНДРОМ и ответным составляет четыре бита.</P>
+<P align=center><FONT size=4><B><U>Посылки от КП к ПУ</U></B></FONT></P>
+<P><FONT size=2>═</FONT></P>
+<P><FONT size=3>Общий вид пакета с информацией</FONT></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>xxxx.xxxx</TD>
+    <TD>xxxx.xxxx</TD>
+    <TD>xxxx.xxxx</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>xxxx.xxxx</TD>
+    <TD>xxxx.xxxx</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>БК..|.ЛУ</TD>
+    <TD>Вид.|АФБ</TD>
+    <TD>Тип|Ном</TD>
+    <TD>═</TD>
+    <TD>Д</TD>
+    <TD>А</TD>
+    <TD>Н</TD>
+    <TD>Н</TD>
+    <TD>Ы</TD>
+    <TD>Е</TD>
+    <TD>═</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код </TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD>Инф|Грп</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD>
+    <TD align=middle>═</TD></TR></TBODY></TABLE>
+<P><STRONG>Где</STRONG></P>
+<P>БК - номер (0-15) каркаса пункта управления (ПУ) в котором установлен 
+линейный узел связи с данным КП</P>
+<P>ЛУ - адрес (1-15) линейного узла связи в каркасе </P>
+<P>N КП - определяется по совокупности БК и ЛУ (число от 1 до 128, уникальное в 
+одном ПУ).</P>
+<P>ВидПкт - тетрада определяющая тип пакета </P>
+<P>АФБ - адрес функционального блока сформировавшего данный пакет 
+(1-15).Определяется физическим местом установки блока в КП.</P>
+<P>Тип Инф - Тип информации (ТС-ТИТ-ТИИ)</P>
+<P>НомГрп - Номер информационной группы. Здесь необходимо заметить,что блоки ТС 
+и ТИИ содержат одну информационную группу (ТС-64сигнала \ ТИИ-16параметров) а 
+блок ТИТ содержит две группы по 16 измерений.Номер группы задается с помощью 
+перемычек на блоке. Во многих системах это поле не анализируется (за исключением 
+младшего бита в пакете ТИТ).</P>
+<P>═</P>
+<P><STRONG>Пакет от блока ТС</STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0100.хххх</TD>
+    <TD>*010.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD>Тип.|Ном</TD>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD>Инф.|Грп</TD>
+    <TD>Байт ТС</TD>
+    <TD>Байт ТС</TD>
+    <TD>Байт ТС</TD>
+    <TD>Байт ТС</TD>
+    <TD>Байт ТС</TD>
+    <TD>Байт ТС</TD>
+    <TD>Байт ТС</TD>
+    <TD>Байт ТС</TD>
+    <TD>Инверс</TD>
+    <TD>Инверс</TD>
+    <TD>Инверс</TD>
+    <TD>Инверс</TD>
+    <TD>Инверс</TD>
+    <TD>Инверс</TD>
+    <TD>Инверс</TD>
+    <TD>Инверс</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD align=middle>9</TD>
+    <TD align=middle>10</TD>
+    <TD align=middle>11</TD>
+    <TD align=middle>12</TD>
+    <TD align=middle>13</TD>
+    <TD align=middle>14</TD>
+    <TD align=middle>15</TD>
+    <TD align=middle>16</TD>
+    <TD align=middle>17</TD>
+    <TD align=middle>18</TD>
+    <TD align=middle>19</TD>
+    <TD align=middle>20</TD>
+    <TD align=middle>21</TD>
+    <TD align=middle>22</TD>
+    <TD align=middle>23</TD></TR></TBODY></TABLE>
+<P>ПРИМЕЧАНИЕ═</P>
+<UL>
+  <LI>═ТипПкт всегда равен 0100 что означает что данный пакет информационный 
+  <LI>ТипИнф может принимать значения 1010 - пакет сформирован с ошибкой или 
+  этот пакет тестовый. Значение 0010 - пакет ТС нормальный и его можно 
+  обрабатывать. 
+  <LI>Блок ТС формирует только один пакет, содержащий 64 значения телесигналов 
+  <LI>Пакет формируется при изменении либого сигнала, при вызове из ПУ (пакет 
+  "вызов по ФА") или по таймеру блока 
+  <LI>Таймер инициирует передачу пакета если в течении 5 сек небыла принята 
+  квитанция на переданный пакет ТС. 
+  <LI>Значение ТС равное 1 - соответствует нормально разомкнутому контакту 
+  датчика ТС </LI></UL>
+<P>═</P>
+<P><STRONG>Пакет от блока ТИТ</STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0100.хххх</TD>
+    <TD>0110.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD>Тип.|Ном</TD>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD align=middle>9</TD>
+    <TD align=middle>10</TD>
+    <TD align=middle>11</TD>
+    <TD align=middle>12</TD>
+    <TD align=middle>13</TD>
+    <TD align=middle>14</TD>
+    <TD align=middle>15</TD>
+    <TD align=middle>16</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD>Инф.|Грп</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD>Байт ТТ</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD align=middle>9</TD>
+    <TD align=middle>10</TD>
+    <TD align=middle>11</TD>
+    <TD align=middle>12</TD>
+    <TD align=middle>13</TD>
+    <TD align=middle>14</TD>
+    <TD align=middle>15</TD>
+    <TD align=middle>16</TD>
+    <TD align=middle>17</TD>
+    <TD align=middle>18</TD>
+    <TD align=middle>19</TD>
+    <TD align=middle>20</TD>
+    <TD align=middle>21</TD>
+    <TD align=middle>22</TD>
+    <TD align=middle>23</TD></TR></TBODY></TABLE>
+<P>ПРИМЕЧАНИЕ═</P>
+<UL>
+  <LI>ТипИнф может принимать значения 0110, 0111, 0011 - в зависимости от 
+  модиффикации блока ТИТ. Все эти значения нормальны. 
+  <LI>Блок тит формирует две посылки ТИТ отличающиеся младшим битом в поле 
+  НомГрп. Первая группа идет со значением бита - 0. 
+  <LI>Пакет необходимо квитировать. Без квитанции блок повторяет передачу через 
+  15-20 сек. 
+  <LI>Каждый пакет содержит в себе 16 значений ТИТ с диапазоном 0-250. 
+  Реверсивные параметры передаются со смещенной шкалой где значению параметра 0 
+  - соотвествует код 125. </LI></UL>
+<P>═</P>
+<P><STRONG>Пакет от блока ТИИ</STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0100.хххх</TD>
+    <TD>0100.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD>Тип.|Ном</TD>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD align=middle>9</TD>
+    <TD align=middle>10</TD>
+    <TD align=middle>11</TD>
+    <TD align=middle>12</TD>
+    <TD align=middle>13</TD>
+    <TD align=middle>14</TD>
+    <TD align=middle>15</TD>
+    <TD align=middle>16</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD>Инф.|Грп</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD>Байт ТИ</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD align=middle>9</TD>
+    <TD align=middle>10</TD>
+    <TD align=middle>11</TD>
+    <TD align=middle>12</TD>
+    <TD align=middle>13</TD>
+    <TD align=middle>14</TD>
+    <TD align=middle>15</TD>
+    <TD align=middle>16</TD>
+    <TD align=middle>17</TD>
+    <TD align=middle>18</TD>
+    <TD align=middle>19</TD>
+    <TD align=middle>20</TD>
+    <TD align=middle>21</TD>
+    <TD align=middle>22</TD>
+    <TD align=middle>23</TD></TR></TBODY></TABLE>
+<P>ПРИМЕЧАНИЕ</P>
+<UL>
+  <LI>ТипИнф всегра равен - 
+  <LI>Блок ТИИ передает только один пакет содержащий 16 параметров 
+  <LI>Квитировать блок не надо 
+  <LI>Пакет на передачу формируется через каждые 15 мин. или по опросу из ПУ 
+  <LI>Каждый параметр ТИИ - есть счетчик импульсов по модулю 255. 
+  <LI>При обработке параметров их тетрады неоходимо поменять местами (для блоков 
+  выпуска до 94г) </LI></UL>
+<P><STRONG>Пакет "Нет Информации" </STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>1001.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD></TR></TBODY></TABLE>
+<P>ПРИМЕЧАНИЕ</P>
+<P>Этот пакет формируется КП в ответ на посылку ОПРОС в магистральном режиме 
+работы.</P>
+<P>Прием данного пакета означает что у КП нет никакой информации для ПУ</P>
+<P>Поля АФБ и байты 4 -5 никакого значения не имеют</P>
+<P>═</P>
+<P><STRONG>Пакет "ОШИБКА КОНТРОЛЛЕРА КП"</STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>1010.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD></TR></TBODY></TABLE>
+<P>Этот пакет формируется в ответ на какой-либо пакет от ПУ если:</P>
+<UL>
+  <LI>обнаружено искажение пакета (по CRC) 
+  <LI>блок для которого предназначен пакет не отвечает </LI></UL>
+<P>Поле АФБ заполняется из входного пакета</P>
+<P>Байты 4-5 не имеют смысла</P>
+<P align=center><FONT size=4><STRONG><U>Посылки от ПУ к 
+КП</U></STRONG></FONT></P>
+<P>═</P>
+<P><STRONG>Квитанция</STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0000.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD></TR></TBODY></TABLE>
+<P>Посылка формируется в ответ на принятый блок ТС или ТИТ</P>
+<P>В поле АФБ заносится адрес блока который д.б. сквитирован</P>
+<P>═</P>
+<P><STRONG>Пакет принудительного вызова информации</STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0001.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD></TR></TBODY></TABLE>
+<P>Поле АФБ может принимать значения -</P>
+<P>1000 - вызов всех ТС КП</P>
+<P>1001 - вызов всех ТИТ КП</P>
+<P>1010 - вызов всех ТИИ КП</P>
+<P>═</P>
+<P><STRONG>Пакет ОПРОС</STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0011.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD></TR></TBODY></TABLE>
+<P>Данный пакет необходим для организации магистрального канала связи</P>
+<P>Поле АФБ не имеет смысла</P>
+<P>В ответ на такой пакет КП либо передает один пакет с информацией, либо 
+передает пакет "нет информации"</P>
+<P>═</P>
+<P><STRONG>Пакет ТЕЛЕУПРАВЛЕНИЕ</STRONG></P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0001.хххх</TD>
+    <TD>1000.0000</TD>
+    <TD>0000.0000</TD>
+    <TD>1000.0000</TD>
+    <TD>0111.1111</TD>
+    <TD>1111.1111</TD>
+    <TD>0111.1111</TD>
+    <TD>1111.1111</TD>
+    <TD>0111.1111</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD colSpan=2>Позиционный код</TD>
+    <TD>Поз. код</TD>
+    <TD colSpan=2>Инв. позиционный </TD>
+    <TD colSpan=2>Инв. позиц. код</TD>
+    <TD>Инв. поз.</TD>
+    <TD colSpan=2>Циклический код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD colSpan=2>номера группы</TD>
+    <TD>обьекта</TD>
+    <TD colSpan=2>код АФБ</TD>
+    <TD colSpan=2>номера группы</TD>
+    <TD>код обьек</TD>
+    <TD align=middle colSpan=2>защиты═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD align=middle>9</TD>
+    <TD align=middle>10</TD>
+    <TD align=middle>11</TD>
+    <TD align=middle>12</TD>
+    <TD align=middle>13</TD>
+    <TD align=middle>14</TD></TR></TBODY></TABLE>
+<P>Поле АФБ принимает значения от 1 до 4 в зависимости от команды ТУ</P>
+<P>0001 - команда "включить" для первого блока ТУ</P>
+<P>0002 - команда "выключить" для первого блока ТУ</P>
+<P>0003 - команда "включить" для второго блока ТУ</P>
+<P>0004 - команда "выключить" для второго блока ТУ</P>
+<P>Таким образом одно КП может содержать в себе до двух блоков ТУ </P>
+<P>Каждый блок может содержать до 16 групп по 8 обьектов</P>
+<P>Примечание: Данный пакет дан в примере Вкл для первого блока - первая группа 
+- первый обьект</P>
+<P>Позиционные коды заполняются слева на право (т.е.первый бит - старший)</P>
+<P>После выполнения команды блок ТУ должен передать пакет "СВОБОДЕН"</P>
+<TABLE border=1 cellSpacing=1>
+  <TBODY>
+  <TR>
+    <TD>0111.1110</TD>
+    <TD>хххх.хххх</TD>
+    <TD>1000.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>хххх.хххх</TD>
+    <TD>0111.1110</TD></TR>
+  <TR>
+    <TD>═</TD>
+    <TD>Бк...|.Лу</TD>
+    <TD>Тип.|АФБ</TD>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD>Цикличе</TD>
+    <TD>ский код</TD>
+    <TD>═</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ</TD>
+    <TD align=middle>N КП</TD>
+    <TD>Пкт..|</TD>
+    <TD>═</TD>
+    <TD>═</TD>
+    <TD align=middle>защиты</TD>
+    <TD>═</TD>
+    <TD align=middle>ФЛАГ</TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD></TR></TBODY></TABLE>
+<P>где поле АФБ содержит адрес блока ТУ в КП (т.е. не тоже что в посылке ТУ)</P>
+<P>Байты 4-5 не имеют смысла</P>
+<P>═</P>
+<P>Конечно есть еще несколько пакетов - вывод на щит ТС и ТИТ сообщения от 
+ЛУ-ретрансляторов и т.п. которые могут заинтересовать только тех кто пишет ПО 
+для ПУ Гранита, однако это уже в прошлом. </P>
+<P>Со всеми вопросами можно обращаться к Дмитриеву Дмитрию.</P></BODY></HTML>

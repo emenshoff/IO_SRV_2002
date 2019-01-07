@@ -1,0 +1,463 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0032)http://www.iface.ru/ComTmPkt.htm -->
+<HTML><HEAD><TITLE>Транзитный протокол COM_TM</TITLE>
+<META content="text/html; charset=koi8-r" http-equiv=Content-Type>
+<META content="MSHTML 5.00.2920.0" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff>
+<P align=center><FONT size=4><STRONG><U>Описание транзитного протокола 
+</U></STRONG></FONT></P>
+<P align=center><STRONG>Версия COM_TM_PKT═</STRONG></P>
+<P align=center>&nbsp;</P>
+<P>Транзитный протокол предназначен для обмена СЕРВЕРА системы с синхронным 
+адаптером через порт RS-232.</P>
+<P>Связь осуществляется в асинхронном режиме (8 бит данных, 1 стоповый бит, без 
+контроля на четность) на скоростях от 1200 до 38400 бод.</P>
+<P>Общий вид пакетов</P>
+<TABLE border=1 cellPadding=4>
+  <TBODY>
+  <TR>
+    <TD align=middle>02h</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>03h</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ
+      <P>СТАРТ</P></TD>
+    <TD align=middle>Адрес порта 
+      <P>адаптера</P>
+      <P>0-254</P></TD>
+    <TD align=middle>Тип пакета</TD>
+    <TD align=middle colSpan=8>ДАННЫЕ
+      <P>до 120 байт</P></TD>
+    <TD align=middle colSpan=2>Циклический код
+      <P>защиты CRC-16</P></TD>
+    <TD align=middle>ФЛАГ
+      <P>СТОП</P></TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>n-3</TD>
+    <TD align=middle>n-2</TD>
+    <TD align=middle>n-1</TD>
+    <TD align=middle>n</TD></TR></TBODY></TABLE>
+<P>Внутри пакета (между флагами) перед всеми байтами имеющие значения 02h 03h 
+09h принудительно вставляется один байт со значением 09h(байт-стаффинг).</P>
+<P>Циклический код защиты охватывает все байты пакета от 2 до n-3 
+(байт-стаффинги не включаются в CRC).</P>
+<P>&nbsp;</P>
+<P align=center><STRONG>Процедура конфигурации (загрузки адаптера)</STRONG></P>
+<P>В процессе конфигурации сначала может быть передан абстрактный файл указанный 
+в конфигурации сервера (до 8 кб) (для адаптеров СИНКОМ это программный код 
+реализующий конкретные функции адаптера), затем конфигурационная строка (как 
+правило символьная строка содержащая конкретные параметры для программы 
+адаптера)</P>
+<P>При передаче - файл разбивается на блоки по 512 байт, последний блок &gt;0 и 
+&lt;= 512.</P>
+<P>Если на сервере не указан файл, то передается сразу конфигурационная строка, 
+которая в вырожденном виде может быть нулевой длины.</P>
+<P>Для каждого порта адаптера может быть проведена самостоятельная процедура 
+конфигурации.</P>
+<P>Процедура конфигурации начинается с запроса со стороны адаптера (следует 
+отметить что адаптер Синком выдает запрос на разных скоростях поочередно для 
+автоопределения скорости обмена)</P>
+<DIV align=center>
+<CENTER>
+<TABLE border=1 width="100%">
+  <TBODY>
+  <TR>
+    <TD align=middle width="33%">АДАПТЕР</TD>
+    <TD align=middle>Тип Пакета</TD>
+    <TD align=middle width="33%">Направление обмена</TD>
+    <TD align=middle width="34%">СЕРВЕР</TD></TR>
+  <TR>
+    <TD width="33%">Запрос Конфигурации</TD>
+    <TD align=middle>a0h</TD>
+    <TD align=middle width="33%">&gt;&gt;&gt;</TD>
+    <TD width="34%">&nbsp;</TD></TR>
+  <TR>
+    <TD width="33%">&nbsp;</TD>
+    <TD align=middle>80h</TD>
+    <TD align=middle width="33%">&lt;&lt;&lt;</TD>
+    <TD width="34%">Первый блок файла </TD></TR>
+  <TR>
+    <TD width="33%">Квитанция</TD>
+    <TD align=middle>80h</TD>
+    <TD align=middle width="33%">&gt;&gt;&gt;</TD>
+    <TD width="34%">&nbsp;</TD></TR>
+  <TR>
+    <TD width="33%">&nbsp;</TD>
+    <TD align=middle>81h</TD>
+    <TD align=middle width="33%">&lt;&lt;&lt;</TD>
+    <TD width="34%">Второй блок файла</TD></TR>
+  <TR>
+    <TD>Квитанция</TD>
+    <TD align=middle>81h</TD>
+    <TD align=middle>&gt;&gt;&gt;</TD>
+    <TD>&nbsp;</TD></TR>
+  <TR>
+    <TD>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>...</TD>
+    <TD>&nbsp;</TD></TR>
+  <TR>
+    <TD>&nbsp;</TD>
+    <TD align=middle>8xh</TD>
+    <TD align=middle>&lt;&lt;&lt;</TD>
+    <TD>Последний блок файла</TD></TR>
+  <TR>
+    <TD>Квитанция</TD>
+    <TD align=middle>8xh</TD>
+    <TD align=middle>&gt;&gt;&gt;</TD>
+    <TD>&nbsp;</TD></TR>
+  <TR>
+    <TD>&nbsp;</TD>
+    <TD align=middle>90h</TD>
+    <TD align=middle>&lt;&lt;&lt;</TD>
+    <TD>Конфигурационная строка</TD></TR>
+  <TR>
+    <TD>Квитанция</TD>
+    <TD align=middle>90h</TD>
+    <TD align=middle>&gt;&gt;&gt;</TD>
+    <TD><STRONG>Для некоторых версий адаптеров 
+  отсутствует!</STRONG></TD></TR></TBODY></TABLE></CENTER></DIV>
+<P><STRONG>Описание пакетов:</STRONG></P>
+<P>Запрос со стороны адаптера на конфигурацию</P>
+<TABLE border=1 cellPadding=4>
+  <TBODY>
+  <TR>
+    <TD align=middle>02h</TD>
+    <TD align=middle>ffh</TD>
+    <TD align=middle>a0h</TD>
+    <TD>0xff</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>03h</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ
+      <P>СТАРТ</P></TD>
+    <TD align=middle>Адрес порта 
+      <P>адаптера</P></TD>
+    <TD align=middle>Тип пакета</TD>
+    <TD>&nbsp;</TD>
+    <TD align=middle colSpan=2>Циклический код
+      <P>защиты CRC-16</P></TD>
+    <TD align=middle>ФЛАГ
+      <P>СТОП</P></TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD>
+    <TD align=middle>9</TD></TR></TBODY></TABLE>
+<P>&nbsp;</P>
+<P>пакет с блоком конфигурационного файла</P>
+<TABLE border=1 cellPadding=4>
+  <TBODY>
+  <TR>
+    <TD align=middle>02h</TD>
+    <TD align=middle>ххh</TD>
+    <TD align=middle>8хh</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>03h</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ
+      <P>СТАРТ</P></TD>
+    <TD align=middle>Адрес порта </TD>
+    <TD align=middle>Тип пакета 0х80+номер блока (с 0)</TD>
+    <TD align=middle colSpan=8>блок файла
+      <P>до 512 байт</P></TD>
+    <TD align=middle colSpan=2>Циклический код
+      <P>защиты CRC-16</P></TD>
+    <TD align=middle>ФЛАГ
+      <P>СТОП</P></TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>n-3</TD>
+    <TD align=middle>n-2</TD>
+    <TD align=middle>n-1</TD>
+    <TD align=middle>n</TD></TR></TBODY></TABLE>
+<P>пакет с конфигурационной строкой</P>
+<TABLE border=1 cellPadding=4>
+  <TBODY>
+  <TR>
+    <TD align=middle>02h</TD>
+    <TD align=middle>ххh</TD>
+    <TD align=middle>90h</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>03h</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ
+      <P>СТАРТ</P></TD>
+    <TD align=middle>Адрес порта </TD>
+    <TD align=middle>Тип пакета</TD>
+    <TD align=middle colSpan=8>Конфигурация
+      <P>до 120 байт</P></TD>
+    <TD align=middle colSpan=2>Циклический код
+      <P>защиты CRC-16</P></TD>
+    <TD align=middle>ФЛАГ
+      <P>СТОП</P></TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>n-3</TD>
+    <TD align=middle>n-2</TD>
+    <TD align=middle>n-1</TD>
+    <TD align=middle>n</TD></TR></TBODY></TABLE>
+<P>Квитанция</P>
+<TABLE border=1 cellPadding=4>
+  <TBODY>
+  <TR>
+    <TD align=middle>02h</TD>
+    <TD align=middle>ххh</TD>
+    <TD align=middle>ххh</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>03h</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ
+      <P>СТАРТ</P></TD>
+    <TD align=middle>Адрес порта 
+      <P>адаптера</P></TD>
+    <TD align=middle>Тип принятого пакета</TD>
+    <TD align=middle colSpan=2>Циклический код
+      <P>защиты CRC-16</P></TD>
+    <TD align=middle>ФЛАГ
+      <P>СТОП</P></TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD></TR></TBODY></TABLE>
+<P>&nbsp;</P>
+<P align=center><STRONG>Информационный обмен телемеханическими 
+пакетами.</STRONG></P>
+<P align=left>Информационный пакет:</P>
+<TABLE border=1 cellPadding=4>
+  <TBODY>
+  <TR>
+    <TD align=middle>02h</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>03h</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ
+      <P>СТАРТ</P></TD>
+    <TD align=middle>Адрес
+      <P>канала</P></TD>
+    <TD align=middle>Код
+      <P>прото-</P>
+      <P>кола</P></TD>
+    <TD align=middle colSpan=7>Телемеханический
+      <P>пакет</P></TD>
+    <TD align=middle colSpan=2>Циклический код
+      <P>защиты CRC-16</P></TD>
+    <TD align=middle>ФЛАГ
+      <P>СТОП</P></TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD>&nbsp;</TD>
+    <TD align=middle>&nbsp;</TD>
+    <TD align=middle>n-3</TD>
+    <TD align=middle>n-2</TD>
+    <TD align=middle>n-1</TD>
+    <TD align=middle>n</TD></TR></TBODY></TABLE>
+<P>Коды протоколов:</P>
+<P>0 - PROT_TERM // Системный терминал ISIO, не используется </P>
+<P>1 - PROT_TM512 // ТМ-512 </P>
+<P>2 - PROT_GRNT // КП Гранита (прослушивающий режим) </P>
+<P>3 - PROT_RPT // РПТ-80 КП-ДП (АИСТ) </P>
+<P>4 - PROT_TM120 // КП ТМ-120 </P>
+<P>5 - PROT_COMPAS // КП Компас </P>
+<P>6 - PROT_ASNGR_F // Дельта-ОИК со стороны ПУ </P>
+<P>7 - PROT_ASNGR_T // Дельта-ОИК со стороны ОИК </P>
+<P>8 - PROT_GRNTASK // КП Гранита </P>
+<P>9 - PROT_ASTRAN // Транзитный протокол, не используется </P>
+<P>10 - PROT_ARPTL // РПТ-80 нижний уровень </P>
+<P>11 - PROT_ARPTU // РПТ-80 верхний </P>
+<P>12 - PROT_ALINK // Протокол модемной связки между ISIO, не используется </P>
+<P>13 - PROT_ASEQ // -------------- "" ----------- </P>
+<P>14 - PROT_MST // КП MST </P>
+<P>15 - PROT_MSTMUX // Мультиплексор MST </P>
+<P>16 - PROT_RPT_DCI // РПТ-80 КП-ДП (АИСТ) БЦИ </P>
+<P>17 - PROT_TRANZ // Протокол для транзита </P>
+<P>18 - PROT_MSTOMSK // КП MST (модификация ОМСК)</P>
+<P>19 - PROT_ BIT_ASYNC// в настоящее время не используется</P>
+<P>20 - PROT_UNI // Протокол UNI (протоколо-независимая передача ТС и ТИТ) 
+применяется при приеме МКТ и ТМ800</P>
+<P>21 - PROT_UNI_KP // Протокол UNI с номерами КП</P>
+<P>22 - PROT_AMK // Адаптер магистрального канала (Компас) </P>
+<P>0x1E - PROT_MAPA // ОТОБРАЖЕНИЕ НА ЩИТ SINCOM-EX </P>
+<P>0xFD - PROT_DIAGS // Диагностика по каналу </P>
+<P>0xFE - PROT_NOTHING // Нет конфигурации по каналу (не используется)</P>
+<P>0xFA - PROT_ERROR // Пакет принятый по каналу с ошибкой</P>
+<P>Квитанция</P>
+<TABLE border=1 cellPadding=4>
+  <TBODY>
+  <TR>
+    <TD align=middle>02h</TD>
+    <TD align=middle>ххh</TD>
+    <TD align=middle>ххh</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>03h</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ
+      <P>СТАРТ</P></TD>
+    <TD align=middle>Адрес порта 
+      <P>адаптера</P></TD>
+    <TD align=middle>Тип принятого пакета</TD>
+    <TD align=middle colSpan=2>Циклический код
+      <P>защиты CRC-16</P></TD>
+    <TD align=middle>ФЛАГ
+      <P>СТОП</P></TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD align=middle>7</TD>
+    <TD align=middle>8</TD></TR></TBODY></TABLE>
+<P>Адаптер раз в пять секунд посылает пакет с диагностикой канала связи</P>
+<TABLE border=1 cellPadding=4>
+  <TBODY>
+  <TR>
+    <TD align=middle>02h</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>fdh</TD>
+    <TD align=middle>00</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>xx</TD>
+    <TD align=middle>03h</TD></TR>
+  <TR>
+    <TD align=middle>ФЛАГ
+      <P>СТАРТ</P></TD>
+    <TD align=middle>Адрес
+      <P>канала</P></TD>
+    <TD align=middle>Код
+      <P>прото-</P>
+      <P>кола</P></TD>
+    <TD align=middle>Авария
+      <P>=ffh</P></TD>
+    <TD align=middle colSpan=4>Число приня-
+      <P>тых пакетов</P></TD>
+    <TD align=middle colSpan=4>Число пере-
+      <P>данных пакетов</P></TD>
+    <TD align=middle colSpan=4>Число ошибок приема</TD>
+    <TD align=middle colSpan=4>Число некви-
+      <P>танций</P></TD>
+    <TD align=middle colSpan=2>Циклический код
+      <P>защиты CRC-16</P></TD>
+    <TD align=middle>ФЛАГ
+      <P>СТОП</P></TD></TR>
+  <TR>
+    <TD align=middle>1</TD>
+    <TD align=middle>2</TD>
+    <TD align=middle>3</TD>
+    <TD align=middle>4</TD>
+    <TD align=middle>5</TD>
+    <TD align=middle>6</TD>
+    <TD>7</TD>
+    <TD>8</TD>
+    <TD>9</TD>
+    <TD>10</TD>
+    <TD>11</TD>
+    <TD>12</TD>
+    <TD>13</TD>
+    <TD>14</TD>
+    <TD>15</TD>
+    <TD>16</TD>
+    <TD>17</TD>
+    <TD>18</TD>
+    <TD>19</TD>
+    <TD align=middle>20</TD>
+    <TD align=middle>21</TD>
+    <TD align=middle>22</TD>
+    <TD align=middle>23</TD></TR></TBODY></TABLE></BODY></HTML>

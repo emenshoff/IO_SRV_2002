@@ -1,0 +1,706 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0043)http://www.stm.rest.ru/formats/stclient.htm -->
+<HTML><HEAD><TITLE>ST<->Client protocol</TITLE>
+<META content="text/html; charset=windows-1251" http-equiv=Content-Type><!-- Meta http equivalent was here                                      --><!-- Составлено DK, Правлено AZ -->
+<META content="MSHTML 5.00.2919.6307" name=GENERATOR></HEAD>
+<BODY aLink=#000099 bgColor=#99cc99 link=#0000cc vLink=#000099>
+<H1 align=center>Протокол обмена "STM&lt;-&gt;Клиент"</H1>
+<H2>Концепция взаимодействия с внешним миром</H2>
+<P>Сервер телеметрии имеет механизм обмена информацией с внешними миром по 
+инициативе внешней стороны, т.е. клиента. Клиент высылает запрос на немедленную 
+выдачу данных либо на выполнение сервером тех или иных действий. Сервер в свою 
+очередь высылает данные либо отчет о выполнении запроса. Таких клиентов может 
+быть достаточно много (во всяком случае 256 - не может считаться пределом, 
+однако по коммерческим соображениям вводится ограничение на меньшее число 
+клиентов).</P>
+<P>Взаимодействие типа 'запрос-ответ' реализовано через механизм сокетов. Число 
+одновременно используемых одним процессом сокетов ограничено операционной 
+системой UNIX (примерно на уровне до 10'000). Сокеты отвязаны от конкретного 
+траспорта пакетов для удаленных клиентов. В силу этих и других соображений 
+реализована следующая модель взаимодействия сервера с внешним миром. </P>
+<UL>
+  <LI>Клиентом по отношению к серверу телеметрии (STM) является любой 
+  UNIX-процесс, связанный с сервером по именованному программному каналу (сокет 
+  семейства протоколов AF_UNIX, тип сокета SOCK_STREAM) либо любой процесс 
+  (удаленный или локальный), связанный с сервером по сокету семейства AF_INET 
+  типа SOCK_STREAM, и производящий информационный обмен в соответствии с 
+  нижеописанным протоколом взаимодействия. Таким образом сервер поддерживает 
+  протокол взаимодействия с клиентом над сокетами двух типов -- внутренний UNIX 
+  и INTERNET. 
+  <LI>Обратным адресом клиента считается сокет по которому принят запрос (это 
+  очевидно) и некий идентификатор целый без знака 0..65535 (16 бит). Реальный 
+  клиент может игнорировать этот идентификатор, либо использовать его для 
+  мультиплексирования запросов от нескольних клиентов через один сокет. 
+  <LI>В случае необходимости выслать одинаковый пакет нескольким клиентам, 
+  подключенным к серверу через один сокет (мультиплексирование) сервер высылает 
+  один пакет со списком ID-адресов (подробнее это описано ниже). 
+  <LI>Суммарная длина пакета запроса или ответа не превышает 65000 байт. Это 
+  ограничение связано со сложностью реализации на некоторых несовершенных 
+  платформах типа Microsoft Windows. 
+  <LI>С целью отвязки от конкретной платформы все данные передаваемые между 
+  клиентом и сервером кодируются в соответствии с протоколом XDR (RFC1832). 
+</LI></UL>
+<HR>
+
+<H2>Детали программной реализации</H2>
+<P>Входной адрес для установления AF_UNIX соединения: 
+"/tmp/__stm_input_socket_for_clients__", для установления AF_INET соединения: 
+port 7780 (в файл services будет внесена строка: "stm 7780/tcp"). Клиент, 
+желающий установить соединение с сервером, должен использовать этот адрес при 
+вызове функции connect(). Далее взаимодействие протекает по схеме "запрос-ответ" 
+в следующей последовательности. </P>
+<OL><LH>
+  <LI>Последовательность действий:</LH> 
+  <LI>Установка соединения (функция connect()). Если удачно, то пункт 2, иначе 
+  повторить либо прекратить попытки. 
+  <LI>Послать CUSER. Если приняты ключи SKEYS, пункт 3, иначе попытаться с 
+  другим именем пользователя либо выход. 
+  <LI>Пароль + ключ1 -&gt; строка1, строка1 + ключ2 -&gt; зашифрованный пароль. 
+  Передать зашифрованный пароль в пакете CPASSW. Если придет SRET, то пункт 2 
+  либо выход, а если придет SVERSION, то пункт 4. 
+  <LI>Теперь можно послать один из запросов CSRVLIST, CTYPELIST, CTYPEDEF, 
+  COBJLIST, CADDREQ, CSETOBJ, CSETOBJS, CCANCEL в любой последовательности. На 
+  каждый из запросов (кроме CCANCEL) последует соответствующий ответ SSRVLIST, 
+  STYPELIST, STYPEDEF, SOBJLIST, SOBJECT, SOBJECTS, SOBJEND, SSETOBJ. 
+  <LI>Разрыв соединения (функция close()). При этом будут уничтожены все запросы 
+  и очищены все таблицы связанные с данным сеансом. </LI></OL>
+<P>Соединение может быть разорвано по инициативе сервера, например в случае 
+коррекции конфигурации последнего. В таком случае описанная последовательность 
+действий повторяется в новом сеансе. </P>
+<HR>
+
+<H2>Структура пакетов</H2>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TH>Направление</TH>
+    <TH>Название посылки</TH>
+    <TH>Id</TH></TR>
+  <TR>
+    <TD align=middle colSpan=3>Вход в систему</TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Имя пользователя</TD>
+    <TD><A 
+    href="http://www.stm.rest.ru/formats/stclient.htm#CUSER">CUSER</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Ключи кодирования</TD>
+    <TD><A 
+    href="http://www.stm.rest.ru/formats/stclient.htm#SKEYS">SKEYS</A></TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Кодированный пароль</TD>
+    <TD><A 
+    href="http://www.stm.rest.ru/formats/stclient.htm#CPASSW">CPASSW</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Результат выполнения запроса</TD>
+    <TD><A 
+  href="http://www.stm.rest.ru/formats/stclient.htm#SRET">SRET</A></TD></TR>
+  <TR>
+    <TD align=middle colSpan=3>Запросы конфигурации</TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Версия конфигурации сервера</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SVERSION">SVERSION</A></TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Запрос списка серверов</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#CSRVLIST">CSRVLIST</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Список серверов</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SSRVLIST">SSRVLIST</A></TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Запрос списка типов объектов</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#CTYPELIST">CTYPELIST</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Список типов объектов</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#STYPELIST">STYPELIST</A></TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Запрос списка объектов</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#COBJLIST">COBJLIST</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Список объектов телеметрии - первый пакет</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SOBJLIST1">SOBJLIST1</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Список объектов телеметрии - продолжение</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SOBJLIST2">SOBJLIST2</A></TD></TR>
+  <TR>
+    <TD align=middle colSpan=3>Информационное взаимодействие</TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Запрос спорадической информации</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#CADDREQ">CADDREQ</A></TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Удалить запрос спорадической информации</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#CDELREQ">CDELREQ</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Спорадическая информация по полю</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SFLDVAL">SFLDVAL</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Спорадическая информация по объекту</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SOBJVAL">SOBJVAL</A></TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Запрос значения объекта</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#CGETOBJ">CGETOBJ</A></TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Запрос синхронных значений объектов</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#CGETOBJS">CGETOBJS</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Ответ на запрос CGETOBJ</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SOBJECT">SOBJECT</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Ответ на запрос CGETOBJS</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SOBJECTS">SOBJECTS</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Ответ на запрос CGETOBJ(S) - последний пакет</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SOBJEND">SOBJEND</A></TD></TR>
+  <TR>
+    <TD>Server &lt;-- Client</TD>
+    <TD>Запрос на изменение значения объекта</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#CSETOBJ">CSETOBJ</A></TD></TR>
+  <TR>
+    <TD>Server --&gt; Client</TD>
+    <TD>Ответ на запрос CSETOBJ</TD>
+    <TD><A 
+      href="http://www.stm.rest.ru/formats/stclient.htm#SSETOBJ">SSETOBJ</A></TD></TR></TBODY></TABLE>
+<P><BR><BR><A name=CUSER></A></P>
+<HR>
+
+<P><B>CUSER -- имя пользователя (для определения прав доступа к серверу)</B> 
+</P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>код запроса = CUSER, ID клиента *)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>имя ползователя</TD>
+    <TD>String</TD></TR></TBODY></TABLE>
+<P>*) Здесь и далее код запроса (целое, без знака, 2 байта) и ID клиента (целое, 
+без знака, 2 байта) упаковываются в один XDR-тип Unsigned Integer по следующему 
+алгоритму: </P><PRE>ret = kod * (2^16) + Id;</PRE>
+<P>а распаковка соответственно: </P><PRE>kod = ret / (2^16);
+Id = ret % (2^16);</PRE>
+<P>В ответ сервер посылает ключи кодирования <A 
+href="http://www.stm.rest.ru/formats/stclient.htm#SKEYS">SKEYS</A> либо код 
+ошибки в <A href="http://www.stm.rest.ru/formats/stclient.htm#SRET">SRET</A>. 
+<BR><BR><BR><A name=SKEYS></A></P>
+<HR>
+
+<P><B>SKEYS -- ключи кодирования пароля</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SKEYS, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>первый ключ</TD>
+    <TD>String</TD></TR>
+  <TR>
+    <TD>второй ключ</TD>
+    <TD>String</TD></TR></TBODY></TABLE>
+<P>Ключи кодирования клиент использует для шифрации пароля, который затем 
+высылает серверу в запросе <A 
+href="http://www.stm.rest.ru/formats/stclient.htm#CPASSW">CPASSW</A>. 
+<BR><BR><BR><A name=CPASSW></A></P>
+<HR>
+
+<P><B>CPASSW -- кодированный пароль</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>CPASSW, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>кодированный пароль</TD>
+    <TD>String</TD></TR></TBODY></TABLE>
+<P>Сервер осуществляет проверку пароля для пользователя, для которого были 
+высланы ключи кодирования, в случае правильного пароля сервер высылает номер 
+версии конфигурации сервера <A 
+href="http://www.stm.rest.ru/formats/stclient.htm#SVERSION">SVERSION</A>, иначе 
+отказ в пакете <A 
+href="http://www.stm.rest.ru/formats/stclient.htm#SRET">SRET</A>. <BR><BR><BR><A 
+name=SRET></A></P>
+<HR>
+
+<P><B>SRET -- результат выполнения запроса</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SRET, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>код запроса, код ошибки</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P><BR><BR><BR><A name=SVERSION></A></P>
+<HR>
+
+<P><B>SVERSION -- номер версии конфигурации сервера</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SVERSION, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>номер версии</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P>Клиент использует версию конфигурации для определения актуальности локального 
+кэша конфигурации. <BR><BR><BR><A name=CSRVLIST></A></P>
+<HR>
+
+<P><B>CSRVLIST -- запрос списка серверов, предоставляющих свои объекты</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>CSRVLIST, ID</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P>В ответ на этот запрос сервер высылает список серверов, <A 
+href="http://www.stm.rest.ru/formats/stclient.htm#SSRVLIST">SSRVLIST</A> с 
+объектами которых обеспечивается работа клиента. <BR><BR><BR><A 
+name=SSRVLIST></A></P>
+<HR>
+
+<P><B>SSRVLIST -- список серверов, предоставляющих свои объекты</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SSRVLIST, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>число серверов = N (1..2^8-1)<BR>+ 2^8, если продолжение следует<BR>+ 
+      общее_число_серверов * 2^16</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>сервер (N раз)</TD>
+    <TD>
+      <TABLE border=1 cellPadding=5>
+        <TBODY>
+        <TR>
+          <TD>имя сервера</TD>
+          <TD>String</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<P>Примечание: первым в списке идет свой сервер. <BR><BR><BR><A 
+name=CTYPELIST></A></P>
+<HR>
+
+<P><B>CTYPELIST -- запрос списка типов объектов</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>CTYPELIST, ID</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P><BR><BR><BR><A name=STYPELIST></A></P>
+<HR>
+
+<P><B>STYPELIST -- список типов объектов</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>STYPELIST, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>число типов = N (1..2^8-1)<BR>+ 2^8, если продолжение следует<BR>+ 
+      общее_число_типов * 2^16</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>тип объекта<BR>(N раз)</TD>
+    <TD>
+      <TABLE border=1 cellPadding=5>
+        <TBODY>
+        <TR>
+          <TD>имя типа</TD>
+          <TD>String</TD></TR>
+        <TR>
+          <TD>число полей = M<BR>(1..2^8-1)</TD>
+          <TD>Unsigned Integer</TD></TR>
+        <TR>
+          <TD>описание поля<BR>(M раз)</TD>
+          <TD>
+            <TABLE border=1 cellPadding=5>
+              <TBODY>
+              <TR>
+                <TD>имя поля</TD>
+                <TD>String</TD></TR>
+              <TR>
+                <TD><A href="http://www.stm.rest.ru/formats/types.htm">тип 
+                  поля</A> [, число элементов массива] </TD>
+                <TD>Unsigned 
+  Integer</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<P>Таких пакетов может быть несколько подряд, суммарная длина каждого не должна 
+превышать 2^16 байт, признак наличия следующего пакета в поле 'число типов'. 
+<BR><BR><BR><A name=COBJLIST></A></P>
+<HR>
+
+<P><B>COBJLIST -- запрос списка объектов телеметрии заданного типа на заданном 
+сервере</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>COBJLIST, ID</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P>Сервер отвечает одним или более пакетами <A 
+href="http://www.stm.rest.ru/formats/stclient.htm#SOBJLIST">SOBJLIST</A>. 
+<BR><BR><BR><A name=SOBJLIST1></A></P>
+<HR>
+
+<P><B>SOBJLIST1 -- элемент списка объектов телеметрии - первый пакет</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SOBJLIST1, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>общее число объектов N = 0..2^32-1</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>число объектов N = 0..2^16-1<BR>или N+2^16 если продолжение следует</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>имя сервера</TD>
+    <TD>String</TD></TR>
+  <TR>
+    <TD>имя тип объекта</TD>
+    <TD>String</TD></TR>
+  <TR>
+    <TD>объект телеметрии (N раз)</TD>
+    <TD>
+      <TABLE border=1 cellPadding=5>
+        <TBODY>
+        <TR>
+          <TD>имя объекта</TD>
+          <TD>String</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<P>Таких пакетов может быть несколько подряд, суммарная длина каждого не должна 
+превышать 2^16 байт, признак наличия следующего пакета в поле 'число объектов'. 
+Идентификатором объекта (1..2^32-1) считается его порядковый номер в списке 
+объектов телеметрии. <BR><BR><BR><A name=SOBJLIST2></A></P>
+<HR>
+
+<P><B>SOBJLIST2 -- элемент списка объектов телеметрии - продолжение</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SOBJLIST2, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>число объектов N = 0..2^16-1<BR>или N+2^16 если продолжение следует</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>имя сервера</TD>
+    <TD>String</TD></TR>
+  <TR>
+    <TD>имя тип объекта</TD>
+    <TD>String</TD></TR>
+  <TR>
+    <TD>объект телеметрии (N раз)</TD>
+    <TD>
+      <TABLE border=1 cellPadding=5>
+        <TBODY>
+        <TR>
+          <TD>имя объекта</TD>
+          <TD>String</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<P>Таких пакетов может быть несколько подряд, суммарная длина каждого не должна 
+превышать 2^16 байт, признак наличия следующего пакета в поле 'число объектов'. 
+Идентификатором объекта (1..2^32-1) считается его порядковый номер в списке 
+объектов телеметрии. <BR><BR><BR><A name=CADDREQ></A></P>
+<HR>
+
+<P><B>CADDREQ -- добавить запрос спорадической информации об объекте</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>CADDREQ, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор объекта (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>маска полей объекта изменение которых должно<BR>приводить к выдаче 
+      нового значения *)</TD>
+    <TD>Unsigned Integer[(число_полей+31)/32] *)</TD></TR></TBODY></TABLE>
+<P>*) Значение 1 первого Unsigned Integer соответствует 1-му полю, 2 - второму, 
+4 - третьему и т.д. <BR><BR><BR><A name=CDELREQ></A></P>
+<HR>
+
+<P><B>CDELREQ -- убавить запрос спорадической информации об объекте</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>CDELREQ, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор объекта (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>маска полей объекта запрос<BR>к которым надо отменить *)</TD>
+    <TD>Unsigned Integer[(число_полей+31)/32] *)</TD></TR></TBODY></TABLE>
+<P>*) Значение 1 первого Unsigned Integer соответствует 1-му полю, 2 - второму, 
+4 - третьему и т.д. <BR><BR><BR><A name=SFLDVAL></A></P>
+<HR>
+
+<P><B>SFLDVAL -- ответная спорадическая информация о поле объекта</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SFLDVAL, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор объекта (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>время получения значения *)</TD>
+    <TD>Unsigned Integer[2]</TD></TR>
+  <TR>
+    <TD>номер поля (1..2^8-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>значение поля</TD>
+    <TD>XDR-представление поля</TD></TR></TBODY></TABLE>
+<P>Значение поля в машинно-зависимом представлении на x86-й платформе не может 
+занимать более 256 байт. </P>
+<P>*) Время: первое число -- секунды от 01.01.70, второе -- микросекунды. 
+<BR><BR><BR><A name=SOBJVAL></A></P>
+<HR>
+
+<P><B>SOBJVAL -- ответная спорадическая информация о полях объекта</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SOBJVAL, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор объекта (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>время получения значения *)</TD>
+    <TD>Unsigned Integer[2]</TD></TR>
+  <TR>
+    <TD>маска полей объекта</TD>
+    <TD>Unsigned Integer[(число_полей+31)/32] **)</TD></TR>
+  <TR>
+    <TD>значения полей, указанных в маске</TD>
+    <TD>XDR-представления полей</TD></TR></TBODY></TABLE>
+<P>Значение поля в машинно-зависимом представлении на x86-й платформе не может 
+занимать более 256 байт. </P>
+<P>*) Время: первое число -- секунды от 01.01.70, второе -- микросекунды.<BR>**) 
+Значение 1 первого Unsigned Integer соответствует 1-му полю, 2 - второму, 4 - 
+третьему и т.д.<BR>***) Если на момент заказа значения запрошенных полей 
+отсутствуют, первый пакет состоит только из двух полей. <BR><BR><A 
+name=CGETOBJ></A></P>
+<HR>
+
+<P><B>CGETOBJ -- запрос значения объекта</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>CGETOBJ, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор запроса (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор объекта (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>маска полей объекта</TD>
+    <TD>Unsigned Integer[(число_полей+31)/32]</TD></TR>
+  <TR>
+    <TD>тип запроса</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>s1 (секунды)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>m1 (микросекунды)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>s2 (секунды)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>m2 (микросекунды)</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P>Варианты значения типа запроса: 1: значение за время t1 = s1 + m1*10^-6 (поля 
+s2 и m2 отсутствуют!) 2: все значения в отрезке времени [t1, t2] 4: s2 значений 
+подряд от времени t1 (s2 типа Integer, т.е. со знаком, m2 отсутствует!) n * 2^16 
++ 5: n значений от t1 с шагом t2 вперед n * 2^16 + 6: n значений от t1 с шагом 
+t2 назад n * 2^16 + 7: n значений в отрезке времени [t1, t2] <BR><BR><BR><A 
+name=CGETOBJS></A></P>
+<HR>
+
+<P><B>CGETOBJS -- запрос синхронных значений объектов</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>CGETOBJS, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор запроса (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>число запрашиваемых объектов = N</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>объект (N раз)</TD>
+    <TD>
+      <TABLE border=1 cellPadding=5>
+        <TBODY>
+        <TR>
+          <TD>идентификатор объекта (1..2^32-1)</TD>
+          <TD>Unsigned Integer</TD></TR>
+        <TR>
+          <TD>маска полей объекта</TD>
+          <TD>Unsigned Integer[(число_полей+31)/32]</TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD>тип запроса</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>s1 (секунды)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>m1 (микросекунды)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>s2 (секунды)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>m2 (микросекунды)</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P>Варианты значения типа запроса: 1: значение за время t1 = s1 + m1*10^-6 (поля 
+s2 и m2 отсутствуют!) 2: все значения в отрезке времени [t1, t2] 4: s2 значений 
+подряд от времени t1 (s2 типа Integer, т.е. со знаком, m2 отсутствует!) n * 2^16 
++ 5: n значений от t1 с шагом t2 вперед n * 2^16 + 6: n значений от t1 с шагом 
+t2 назад n * 2^16 + 7: n значений в отрезке времени [t1, t2] <BR><BR><BR><A 
+name=SOBJECT></A></P>
+<HR>
+
+<P><B>SOBJECT -- значения запрошенных полей объекта</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SOBJECT, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор запроса (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>время получения значения</TD>
+    <TD>Unsigned Integer[2]</TD></TR>
+  <TR>
+    <TD>маска полей объекта</TD>
+    <TD>Unsigned Integer[(число_полей+31)/32]</TD></TR>
+  <TR>
+    <TD>значения полей, указанных в маске</TD>
+    <TD>XDR-представления полей</TD></TR></TBODY></TABLE>
+<P><BR><BR><BR><A name=SOBJECTS></A></P>
+<HR>
+
+<P><B>SOBJECTS -- синхронные значения запрошенных полей объектов</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SOBJECTS, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор запроса (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>время среза</TD>
+    <TD>Unsigned Integer[2]</TD></TR>
+  <TR>
+    <TD>число объектов = N</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>объект (N раз)</TD>
+    <TD>
+      <TABLE border=1 cellPadding=5>
+        <TBODY>
+        <TR>
+          <TD>маска полей объекта</TD>
+          <TD>Unsigned Integer[(число_полей+31)/32]</TD></TR>
+        <TR>
+          <TD>значения полей, указанных в маске</TD>
+          <TD>XDR-представления полей</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<P><BR><BR><BR><A name=SOBJEND></A></P>
+<HR>
+
+<P><B>SOBJEND -- значения запрошенных полей объекта -- последний пакет ответа на 
+запросы CGETOBJ, CGETOBJS</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SOBJEND, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор запроса (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P><BR><BR><BR><A name=CSETOBJ></A></P>
+<HR>
+
+<P><B>CSETOBJ -- запрос на изменение значения объекта</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>CSETOBJ, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор запроса (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор объекта (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>маска изменяемых полей объекта</TD>
+    <TD>Unsigned Integer[(число_полей+31)/32]</TD></TR>
+  <TR>
+    <TD>значения полей, указанных в маске</TD>
+    <TD>XDR-представления полей</TD></TR></TBODY></TABLE>
+<P><BR><BR><BR><A name=SSETOBJ></A></P>
+<HR>
+
+<P><B>SSETOBJ -- ответ на запрос об изменении значения объекта</B> </P>
+<TABLE border=1 cellPadding=5>
+  <TBODY>
+  <TR>
+    <TD>SSETOBJ, ID</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>идентификатор запроса (1..2^32-1)</TD>
+    <TD>Unsigned Integer</TD></TR>
+  <TR>
+    <TD>результат (0 - Ok, иначе код ошибки)</TD>
+    <TD>Unsigned Integer</TD></TR></TBODY></TABLE>
+<P><BR><BR><BR></P>
+<HR>
+</BODY></HTML>

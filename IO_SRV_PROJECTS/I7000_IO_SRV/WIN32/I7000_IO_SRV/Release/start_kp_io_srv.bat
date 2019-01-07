@@ -1,0 +1,1 @@
+I7000_IO_SRV.exe -port 7780 -cfg test_i7000.stm

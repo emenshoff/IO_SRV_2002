@@ -1,0 +1,546 @@
+# Microsoft Developer Studio Generated Dependency File, included by I7000_IO_SRV.mak
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\data_block.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\data_block.h"\
+	
+
+..\..\SOURCES\SRC\I7000_cdv.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\SOURCES\INCLUDE\I7000_cdv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_proto.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	"..\..\SOURCES\INCLUDE\I7000_types.h"\
+	
+
+..\..\SOURCES\SRC\I7000_config.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_module.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_tracer.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\SOURCES\INCLUDE\I7000_cdv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_config.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_digital_input.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_digital_output.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_input.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_item.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_output.h"\
+	"..\..\SOURCES\INCLUDE\I7000_drv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_functional.h"\
+	"..\..\SOURCES\INCLUDE\I7000_proto.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	"..\..\SOURCES\INCLUDE\I7000_types.h"\
+	"..\..\SOURCES\INCLUDE\I7041\I7041_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7041\I7041_types.h"\
+	"..\..\SOURCES\INCLUDE\I7042\I7042_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7042\I7042_types.h"\
+	
+
+..\..\SOURCES\SRC\I7000_crc.cpp : \
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	
+
+..\..\SOURCES\SRC\I7000_dev.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	
+
+..\..\SOURCES\SRC\I7000_dev_digital_input.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_digital_input.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_input.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_item.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_types.h"\
+	
+
+..\..\SOURCES\SRC\I7000_dev_digital_output.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_digital_output.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_item.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_output.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_types.h"\
+	
+
+..\..\SOURCES\SRC\I7000_dev_input.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_input.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_item.h"\
+	
+
+..\..\SOURCES\SRC\I7000_dev_output.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_item.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_output.h"\
+	
+
+..\..\SOURCES\SRC\I7000_drv.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_module.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_supervisor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_tracer.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\SOURCES\INCLUDE\I7000_cdv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_config.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_input.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_item.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_output.h"\
+	"..\..\SOURCES\INCLUDE\I7000_drv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_io_srv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_proto.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	"..\..\SOURCES\INCLUDE\I7000_types.h"\
+	
+
+..\..\SOURCES\SRC\I7000_events_cash.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_module.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_supervisor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	
+
+..\..\SOURCES\SRC\I7000_io_srv.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\data_block.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_module.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_supervisor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_sock.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_tracer.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_cln.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_packets.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg_control.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_const.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\xdr_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	"..\..\SOURCES\INCLUDE\I7000_cdv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7000_drv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_io_srv.h"\
+	"..\..\SOURCES\INCLUDE\I7000_proto.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	
+
+..\..\SOURCES\SRC\I7000_proto.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_proto.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	
+
+..\..\SOURCES\SRC\I7000_serial.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	
+
+..\..\SOURCES\SRC\I7000_types.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\SOURCES\INCLUDE\I7000_types.h"\
+	
+
+..\..\SOURCES\SRC\I7041\I7041_dev.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_digital_input.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_input.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_item.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_proto.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	"..\..\SOURCES\INCLUDE\I7000_types.h"\
+	"..\..\SOURCES\INCLUDE\I7041\I7041_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7041\I7041_types.h"\
+	
+
+..\..\SOURCES\SRC\I7041\I7041_types.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\SOURCES\INCLUDE\I7041\I7041_types.h"\
+	
+
+..\..\SOURCES\SRC\I7042\I7042_dev.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_control_object.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\SOURCES\INCLUDE\I7000_crc.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_digital_output.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_item.h"\
+	"..\..\SOURCES\INCLUDE\I7000_dev_output.h"\
+	"..\..\SOURCES\INCLUDE\I7000_events_cash.h"\
+	"..\..\SOURCES\INCLUDE\I7000_proto.h"\
+	"..\..\SOURCES\INCLUDE\I7000_serial.h"\
+	"..\..\SOURCES\INCLUDE\I7042\I7042_dev.h"\
+	"..\..\SOURCES\INCLUDE\I7042\I7042_types.h"\
+	
+
+..\..\SOURCES\SRC\I7042\I7042_types.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\SOURCES\INCLUDE\I7042\I7042_types.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\io_srv.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\data_block.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_module.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_supervisor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_sock.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_tracer.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_cln.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_packets.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg_control.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_const.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\xdr_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\io_srv_drv_types.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_drv_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\io_srv_dump.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\io_srv_event_processor.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\io_srv_event_supervisor.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_supervisor.h"\
+	
+
+..\..\SOURCES\SRC\main.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_supervisor.h"\
+	"..\..\SOURCES\INCLUDE\I7000_io_srv.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\serial_port.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\serial_port.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\srv_sock.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_sock.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\srv_tracer.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_tracer.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\stm_cln.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_supervisor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_sock.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_tracer.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_cln.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_packets.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_const.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\time_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\val.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\xdr_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\stm_srv.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_sock.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\srv_tracer.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_cln.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_packets.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_const.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\xdr_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\stm_srv_cfg.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\stm_srv_cfg_control.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\bin_data.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\data_block.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\def_crit_sec.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_dump.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_processor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_event_supervisor.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\io_srv_modules.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_srv_cfg_control.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\val.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\win2koi_koi2win.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\XDR\XDR.C : \
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\XDR\XDR_ARRA.C : \
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\XDR\XDR_FLOA.C : \
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\XDR\XDR_MEM.C : \
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\XDR\XDR_REC.C : \
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\XDR\XDR_REFE.C : \
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\XDR\XDR_STDI.C : \
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	
+
+..\..\..\IO_SRV_BASE\SOURCES\SRC\xdr_utils.cpp : \
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\stm_types.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\INCLUDE\xdr_utils.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\rpctypes.h"\
+	"..\..\..\IO_SRV_BASE\SOURCES\XDR\xdr.h"\
+	

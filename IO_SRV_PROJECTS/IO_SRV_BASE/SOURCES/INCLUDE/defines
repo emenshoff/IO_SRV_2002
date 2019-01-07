@@ -1,0 +1,9 @@
+#ifdef MULTI_THREADED
+#ifdef WIN32
+#else
+#endif
+#endif
+
+#ifdef WIN32
+#else
+#endif
